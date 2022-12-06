@@ -29,11 +29,19 @@ export default function App() {
     }
     
     function updateNote(text) {
-        setNotes(oldNotes => oldNotes.map(oldNote => {
-            return oldNote.id === currentNoteId
-                ? { ...oldNote, body: text }
-                : oldNote
-        }))
+        //  Put the most recently modified note at the top of the list 
+        setNotes(oldNotes => {
+            const newNotes = []
+            for (let i=0; i<oldNotes.length; i++) {
+                const oldNote = oldNotes[i]
+                if (oldNote.id === currentNoteId) {
+                    newNotes.unshift({ ...oldNote, body: text })
+                } else {
+                    newNotes.push(oldNote)
+                }
+            }
+            return newNotes
+        })
     }
     
     function findCurrentNote() {
